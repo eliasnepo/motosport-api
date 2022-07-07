@@ -12,7 +12,7 @@
 	<artifactId>movies</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>movies</name>
-	<description>Backend from a video streaming platform using Clean Architecture</description>
+	<description>Backend from a motosport API using Clean Architecture</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

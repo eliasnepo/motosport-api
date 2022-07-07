@@ -1,7 +1,7 @@
-package com.eliasnepo.movies.infraestructure.user.jpa;
+package com.eliasnepo.motosport.infraestructure.user.jpa;
 
-import com.eliasnepo.movies.domain.user.User;
-import com.eliasnepo.movies.domain.user.UserRepository;
+import com.eliasnepo.motosport.domain.user.User;
+import com.eliasnepo.motosport.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

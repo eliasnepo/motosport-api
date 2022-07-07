@@ -1,6 +1,6 @@
-package com.eliasnepo.movies.infraestructure.user.jpa;
+package com.eliasnepo.motosport.infraestructure.user.jpa;
 
-import com.eliasnepo.movies.domain.user.User;
+import com.eliasnepo.motosport.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

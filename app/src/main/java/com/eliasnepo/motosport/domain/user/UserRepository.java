@@ -1,4 +1,4 @@
-package com.eliasnepo.movies.domain.user;
+package com.eliasnepo.motosport.domain.user;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,5 @@
-package com.eliasnepo.movies.application.user;
+package com.eliasnepo.motosport.application.user;
 
-import com.eliasnepo.movies.domain.user.User;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

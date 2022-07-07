@@ -1,10 +1,10 @@
-package com.eliasnepo.movies;
+package com.eliasnepo.motosport;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MoviesApplicationTests {
+class MotosportApplicationTests {
 
 	@Test
 	void contextLoads() {

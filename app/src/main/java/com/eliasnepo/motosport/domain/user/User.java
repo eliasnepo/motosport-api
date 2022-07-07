@@ -1,4 +1,4 @@
-package com.eliasnepo.movies.domain.user;
+package com.eliasnepo.motosport.domain.user;
 
 import lombok.*;
 import javax.persistence.*;
