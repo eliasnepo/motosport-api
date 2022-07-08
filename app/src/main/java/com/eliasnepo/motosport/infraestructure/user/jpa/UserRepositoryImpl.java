@@ -16,17 +16,21 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return userRepositoryJpa.findAll();
+        return userRepositoryJpa.findAll().stream().map(UserEntity::toDomain).toList();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepositoryJpa.findById(id);
+        return userRepositoryJpa.findById(id).map(UserEntity::toDomain);
     }
 
     @Override
-    public Optional<User> create(User userRequest) {
-        return Optional.of(userRepositoryJpa.save(userRequest));
+    public User create(User user) {
+        UserEntity userEntity = UserEntity.fromDomain(user);
+
+        userEntity = userRepositoryJpa.save(userEntity);
+        System.out.println(userEntity);
+        return userEntity.toDomain();
     }
 
     @Override
