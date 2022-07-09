@@ -1,8 +1,8 @@
 package com.eliasnepo.motosport.infraestructure.user.controllers;
 
-import com.eliasnepo.motosport.application.user.create.UserCreatedUseCase;
-import com.eliasnepo.motosport.application.user.create.dto.UserRequest;
-import com.eliasnepo.motosport.application.user.create.dto.UserResponse;
+import com.eliasnepo.motosport.application.user.create.CreateUserUseCase;
+import com.eliasnepo.motosport.application.user.create.dto.CreateUserRequest;
+import com.eliasnepo.motosport.application.user.create.dto.CreateUserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,18 +14,18 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "user/register")
+@RequestMapping(value = "/user")
 public class UserController {
 
-    private final UserCreatedUseCase createUserService;
+    private final CreateUserUseCase createUserService;
 
-    public UserController(final UserCreatedUseCase createUserService) {
+    public UserController(final CreateUserUseCase createUserService) {
         this.createUserService = createUserService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> insertUser(@Valid @RequestBody UserRequest userRequest) {
-        UserResponse userResponse = createUserService.createUser(userRequest);
+    @PostMapping(value = "/register")
+    public ResponseEntity<CreateUserResponse> insertUser(@Valid @RequestBody CreateUserRequest userRequest) {
+        CreateUserResponse userResponse = createUserService.createUser(userRequest);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()

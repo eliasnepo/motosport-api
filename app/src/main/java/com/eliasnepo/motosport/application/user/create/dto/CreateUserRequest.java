@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @Getter
-public class UserRequest {
+public class CreateUserRequest {
     @NotBlank @Size(max = 50)
     private String name;
     @NotBlank @Email
