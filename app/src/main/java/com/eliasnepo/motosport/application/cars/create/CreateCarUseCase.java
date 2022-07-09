@@ -6,7 +6,6 @@ import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.domain.category.CategoryRepository;
 import org.springframework.stereotype.Service;
 
-@Service
 public class CreateCarUseCase {
 
     private final CarRepository repository;

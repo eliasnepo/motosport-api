@@ -6,6 +6,7 @@ import com.eliasnepo.motosport.application.cars.create.dto.CreateCarResponse;
 import com.eliasnepo.motosport.application.category.create.CreateCategoryUseCase;
 import com.eliasnepo.motosport.application.category.create.dto.CreateCategoryRequest;
 import com.eliasnepo.motosport.application.category.create.dto.CreateCategoryResponse;
+import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryRepositoryImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +22,12 @@ import java.net.URI;
 @RequestMapping("/category")
 public class CategoryController {
 
+    private final CategoryRepositoryImpl categoryRepository;
     private final CreateCategoryUseCase createCategoryService;
 
-    public CategoryController(final CreateCategoryUseCase createCategoryService) {
-        this.createCategoryService = createCategoryService;
+    public CategoryController(final CategoryRepositoryImpl categoryRepository) {
+        this.categoryRepository = categoryRepository;
+        this.createCategoryService = new CreateCategoryUseCase(categoryRepository);
     }
 
     @PostMapping

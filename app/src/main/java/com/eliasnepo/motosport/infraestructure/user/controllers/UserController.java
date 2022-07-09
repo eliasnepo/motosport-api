@@ -3,6 +3,7 @@ package com.eliasnepo.motosport.infraestructure.user.controllers;
 import com.eliasnepo.motosport.application.user.create.CreateUserUseCase;
 import com.eliasnepo.motosport.application.user.create.dto.CreateUserRequest;
 import com.eliasnepo.motosport.application.user.create.dto.CreateUserResponse;
+import com.eliasnepo.motosport.infraestructure.user.jpa.UserRepositoryImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +18,12 @@ import java.net.URI;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    private final UserRepositoryImpl repository;
     private final CreateUserUseCase createUserService;
 
-    public UserController(final CreateUserUseCase createUserService) {
-        this.createUserService = createUserService;
+    public UserController(final UserRepositoryImpl repository) {
+        this.repository = repository;
+        this.createUserService = new CreateUserUseCase(repository);
     }
 
     @PostMapping(value = "/register")

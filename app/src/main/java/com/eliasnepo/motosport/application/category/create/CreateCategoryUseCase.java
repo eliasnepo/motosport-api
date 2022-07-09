@@ -10,7 +10,6 @@ import com.eliasnepo.motosport.domain.category.CategoryRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-@Repository
 public class CreateCategoryUseCase {
 
     private final CategoryRepository repository;

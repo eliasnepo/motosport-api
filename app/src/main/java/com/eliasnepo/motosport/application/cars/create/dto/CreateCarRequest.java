@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
@@ -18,15 +19,15 @@ public class CreateCarRequest {
     private String name;
     @NotBlank
     private String engine;
-    @NotBlank
+    @NotNull
     private Integer tyreSize;
-    @NotBlank
+    @NotNull
     private Integer weight;
-    @NotBlank
+    @NotNull
     private Integer championshipStanding;
-    @NotBlank @PastOrPresent
+    @NotNull @PastOrPresent
     private LocalDate year;
-
+    @NotNull
     private Long categoryId;
 
     public Car toModel(CategoryRepository categoryRepository) {
