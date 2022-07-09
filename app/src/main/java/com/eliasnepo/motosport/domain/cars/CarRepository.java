@@ -1,0 +1,16 @@
+package com.eliasnepo.motosport.domain.cars;
+
+import com.eliasnepo.motosport.domain.user.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface CarRepository {
+
+    List<Car> findAll();
+    Optional<Car> findById(Long id);
+    User create(Car userRequest);
+    void delete(Long id);
+}
