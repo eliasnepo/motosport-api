@@ -1,5 +1,8 @@
 package com.eliasnepo.motosport.infraestructure.cars.jpa;
 
+import com.eliasnepo.motosport.domain.cars.Car;
+import com.eliasnepo.motosport.domain.user.User;
+import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,5 +43,13 @@ public class CarEntity {
         this.weight = weight;
         this.championshipStanding = championshipStanding;
         this.year = year;
+    }
+
+    public Car toDomain() {
+        return new Car(getId(), getName(), getEngine(), getTyreSize(), getWeight(), getChampionshipStanding(), getYear());
+    }
+
+    public static CarEntity fromDomain(Car car) {
+        return new CarEntity(car.getId(), car.getName(), car.getEngine(), car.getTyreSize(), car.getWeight(), car.getChampionshipStanding(), car.getYear());
     }
 }
