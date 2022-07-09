@@ -18,7 +18,7 @@ public class CreateCarUseCase {
         this.repository = repository;
     }
 
-    public CreateCarResponse createUser(CreateCarRequest request) {
+    public CreateCarResponse createCar(CreateCarRequest request) {
         var carDomain = request.toModel();
         carDomain = repository.create(carDomain);
         return new CreateCarResponse(carDomain);
