@@ -1,6 +1,6 @@
 package com.eliasnepo.motosport.domain.cars;
 
-import com.eliasnepo.motosport.domain.user.User;
+import com.eliasnepo.motosport.domain.category.Category;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

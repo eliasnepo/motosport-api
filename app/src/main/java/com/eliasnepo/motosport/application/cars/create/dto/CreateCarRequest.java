@@ -1,6 +1,8 @@
 package com.eliasnepo.motosport.application.cars.create.dto;
 
 import com.eliasnepo.motosport.domain.cars.Car;
+import com.eliasnepo.motosport.domain.cars.CarRepository;
+import com.eliasnepo.motosport.domain.category.CategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,7 +27,12 @@ public class CreateCarRequest {
     @NotBlank @PastOrPresent
     private LocalDate year;
 
-    public Car toModel() {
-        return new Car(this.name, this.engine, this.tyreSize, this.weight, this.championshipStanding, this.year);
+    private Long categoryId;
+
+    public Car toModel(CategoryRepository categoryRepository) {
+        var category = categoryRepository.findById(categoryId);
+        if (category.isEmpty()) { throw new RuntimeException("Category does not exists."); }
+
+        return new Car(this.name, this.engine, this.tyreSize, this.weight, this.championshipStanding, this.year, category.get());
     }
 }

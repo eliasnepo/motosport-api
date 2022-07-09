@@ -2,6 +2,7 @@ package com.eliasnepo.motosport.infraestructure.cars.jpa;
 
 import com.eliasnepo.motosport.domain.cars.Car;
 import com.eliasnepo.motosport.domain.user.User;
+import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryEntity;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,10 @@ public class CarEntity {
     @Column(nullable = false)
     private LocalDate year;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
     public CarEntity(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year) {
         this.name = name;
         this.engine = engine;
@@ -46,10 +51,10 @@ public class CarEntity {
     }
 
     public Car toDomain() {
-        return new Car(getId(), getName(), getEngine(), getTyreSize(), getWeight(), getChampionshipStanding(), getYear());
+        return new Car(getId(), getName(), getEngine(), getTyreSize(), getWeight(), getChampionshipStanding(), getYear(), getCategory().toDomain());
     }
 
     public static CarEntity fromDomain(Car car) {
-        return new CarEntity(car.getId(), car.getName(), car.getEngine(), car.getTyreSize(), car.getWeight(), car.getChampionshipStanding(), car.getYear());
+        return new CarEntity(car.getId(), car.getName(), car.getEngine(), car.getTyreSize(), car.getWeight(), car.getChampionshipStanding(), car.getYear(), CategoryEntity.fromDomain(car.getCategory()));
     }
 }

@@ -1,5 +1,6 @@
 package com.eliasnepo.motosport.domain.cars;
 
+import com.eliasnepo.motosport.domain.category.Category;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,13 +19,16 @@ public class Car {
     private Integer championshipStanding;
     private LocalDate year;
 
-    public Car(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year) {
+    private Category category;
+
+    public Car(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year, Category category) {
         this.name = name;
         this.engine = engine;
         this.tyreSize = tyreSize;
         this.weight = weight;
         this.championshipStanding = championshipStanding;
         this.year = year;
+        this.category = category;
     }
 
     public void changeCurrentStanding(Integer currentStanding) {

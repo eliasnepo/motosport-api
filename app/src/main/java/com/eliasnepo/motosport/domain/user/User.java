@@ -1,7 +1,9 @@
 package com.eliasnepo.motosport.domain.user;
 
 import lombok.*;
-import javax.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
@@ -13,6 +15,8 @@ public class User {
     private String name;
     private String email;
     private String password;
+
+    private Set<Role> roles = new HashSet<>();
 
     public User(String name, String email, String password) {
         this.name = name;
