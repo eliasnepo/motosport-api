@@ -11,6 +11,6 @@ public interface CarRepository {
 
     List<Car> findAll();
     Optional<Car> findById(Long id);
-    User create(Car userRequest);
+    Car create(Car userRequest);
     void delete(Long id);
 }
