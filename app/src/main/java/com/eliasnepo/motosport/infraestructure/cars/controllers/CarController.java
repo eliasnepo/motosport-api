@@ -3,13 +3,12 @@ package com.eliasnepo.motosport.infraestructure.cars.controllers;
 import com.eliasnepo.motosport.application.cars.create.CreateCarUseCase;
 import com.eliasnepo.motosport.application.cars.create.dto.CreateCarRequest;
 import com.eliasnepo.motosport.application.cars.create.dto.CreateCarResponse;
+import com.eliasnepo.motosport.application.cars.find.FindCarUseCase;
+import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
 import com.eliasnepo.motosport.infraestructure.cars.jpa.CarRepositoryImpl;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryRepositoryImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -22,11 +21,13 @@ public class CarController {
     private final CarRepositoryImpl repository;
     private final CategoryRepositoryImpl categoryRepository;
     private final CreateCarUseCase createCarService;
+    private final FindCarUseCase findCarService;
 
     public CarController(final CarRepositoryImpl repository, final CategoryRepositoryImpl categoryRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
         this.createCarService = new CreateCarUseCase(repository, categoryRepository);
+        this.findCarService = new FindCarUseCase(repository);
     }
 
     @PostMapping
@@ -40,5 +41,11 @@ public class CarController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(carResponse);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<FindCarResponse> findCarById(@PathVariable Long id) {
+        FindCarResponse response = findCarService.findCarById(id);
+        return ResponseEntity.ok(response);
     }
 }
