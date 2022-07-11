@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserController {
 
     private final UserRepositoryImpl repository;
