@@ -16,6 +16,10 @@ public class CreateUserRequest {
     @NotBlank @Size(min = 8, max = 40)
     private String password;
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User toModel() {
         return new User(this.name, this.email, this.password);
     }

@@ -7,7 +7,9 @@ import com.eliasnepo.motosport.application.user.create.dto.CreateUserResponse;
 import com.eliasnepo.motosport.application.user.find.FindUserUseCase;
 import com.eliasnepo.motosport.application.user.find.dto.FindUserResponse;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,14 +24,18 @@ public class UserController {
     private final CreateUserUseCase createUserService;
     private final FindUserUseCase findUserService;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     public UserController(final UserRepositoryImpl repository) {
         this.repository = repository;
         this.createUserService = new CreateUserUseCase(repository);
         this.findUserService = new FindUserUseCase(repository);
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @PostMapping(value = "/register")
     public ResponseEntity<CreateUserResponse> insertUser(@Valid @RequestBody CreateUserRequest userRequest) {
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         CreateUserResponse userResponse = createUserService.createUser(userRequest);
 
         URI uri = ServletUriComponentsBuilder
