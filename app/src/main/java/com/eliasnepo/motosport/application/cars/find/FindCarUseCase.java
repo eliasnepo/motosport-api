@@ -2,6 +2,7 @@ package com.eliasnepo.motosport.application.cars.find;
 
 import com.eliasnepo.motosport.application.cars.create.dto.CreateCarResponse;
 import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
+import com.eliasnepo.motosport.application.exceptions.ResourceNotFoundException;
 import com.eliasnepo.motosport.domain.cars.Car;
 import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.domain.category.CategoryRepository;
@@ -20,7 +21,7 @@ public class FindCarUseCase {
         Optional<Car> car = repository.findById(id);
 
         if (car.isEmpty()) {
-            throw new RuntimeException("Car does not exists with ID: " + id);
+            throw new ResourceNotFoundException("Car does not exists with ID: " + id);
         }
 
         return new FindCarResponse(car.get());
