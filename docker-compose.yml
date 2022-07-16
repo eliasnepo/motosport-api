@@ -15,10 +15,10 @@ services:
 
   localstack:
     image: localstack/localstack:latest
-      environment:
-        SERVICES: s3
-      ports:
-        - 4566:4566
+    environment:
+      - SERVICES=s3
+    ports:
+      - 4566:4566
 
   aws-cli:
     image: mesosphere/aws-cli
@@ -29,8 +29,12 @@ services:
     entrypoint: /bin/sh -c
     command: >
       "
-        sleep 25
-        aws s3 --endpoint-url http://localhost:4566 create-bucket images-cars
+        sleep 10
+        aws s3api --endpoint-url http://localstack:4566 create-bucket --bucket images-cars
+      
+        sleep 5
+        echo Listing buckets
+        aws s3api --endpoint-url http://localstack:4566 list-buckets
       "
     depends_on:
       - localstack
