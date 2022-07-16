@@ -34,3 +34,8 @@ build/
 
 ### MacOS ###
 .DS_Store
+
+### Terraform ###
+infra/.terraform.lock.hcl
+infra/.terraform/
+infra/terraform.tfstate
