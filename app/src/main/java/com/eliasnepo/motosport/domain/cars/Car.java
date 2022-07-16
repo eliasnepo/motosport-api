@@ -19,15 +19,18 @@ public class Car {
     private Integer championshipStanding;
     private LocalDate year;
 
+    private String imgUrl;
+
     private Category category;
 
-    public Car(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year, Category category) {
+    public Car(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year, String imgUrl, Category category) {
         this.name = name;
         this.engine = engine;
         this.tyreSize = tyreSize;
         this.weight = weight;
         this.championshipStanding = championshipStanding;
         this.year = year;
+        this.imgUrl = imgUrl;
         this.category = category;
     }
 

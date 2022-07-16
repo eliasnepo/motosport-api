@@ -18,6 +18,7 @@ public class FindCarResponse {
     private Integer weight;
     private Integer championshipStanding;
     private LocalDate year;
+    private String imgUrl;
     private Category category;
 
     public FindCarResponse(Car domain) {
@@ -28,6 +29,7 @@ public class FindCarResponse {
         this.weight = domain.getWeight();
         this.championshipStanding = domain.getChampionshipStanding();
         this.year = domain.getYear();
+        this.imgUrl = domain.getImgUrl();
         this.category = domain.getCategory();
     }
 }

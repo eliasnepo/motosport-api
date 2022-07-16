@@ -16,6 +16,7 @@ public class CreateCarResponse {
     private Integer tyreSize;
     private Integer weight;
     private Integer championshipStanding;
+    private String imgUrl;
     private LocalDate year;
 
     public CreateCarResponse(Car carDomain) {
@@ -25,6 +26,7 @@ public class CreateCarResponse {
         this.tyreSize = carDomain.getTyreSize();
         this.weight = carDomain.getWeight();
         this.championshipStanding = carDomain.getChampionshipStanding();
+        this.imgUrl = carDomain.getImgUrl();
         this.year = carDomain.getYear();
     }
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import java.net.URL;
 import java.time.LocalDate;
 
 @Getter
@@ -30,10 +31,10 @@ public class CreateCarRequest {
     @NotNull
     private Long categoryId;
 
-    public Car toModel(CategoryRepository categoryRepository) {
+    public Car toModel(CategoryRepository categoryRepository, URL imgUrl) {
         var category = categoryRepository.findById(categoryId);
         if (category.isEmpty()) { throw new RuntimeException("Category does not exists."); }
 
-        return new Car(this.name, this.engine, this.tyreSize, this.weight, this.championshipStanding, this.year, category.get());
+        return new Car(this.name, this.engine, this.tyreSize, this.weight, this.championshipStanding, this.year, imgUrl.toString(), category.get());
     }
 }

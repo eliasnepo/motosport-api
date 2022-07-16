@@ -37,24 +37,27 @@ public class CarEntity {
     @Column(nullable = false)
     private LocalDate year;
 
+    private String imgUrl;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    public CarEntity(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, LocalDate year) {
+    public CarEntity(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, String imgUrl, LocalDate year) {
         this.name = name;
         this.engine = engine;
         this.tyreSize = tyreSize;
         this.weight = weight;
         this.championshipStanding = championshipStanding;
+        this.imgUrl = imgUrl;
         this.year = year;
     }
 
     public Car toDomain() {
-        return new Car(getId(), getName(), getEngine(), getTyreSize(), getWeight(), getChampionshipStanding(), getYear(), getCategory().toDomain());
+        return new Car(getId(), getName(), getEngine(), getTyreSize(), getWeight(), getChampionshipStanding(), getYear(), getImgUrl(), getCategory().toDomain());
     }
 
     public static CarEntity fromDomain(Car car) {
-        return new CarEntity(car.getId(), car.getName(), car.getEngine(), car.getTyreSize(), car.getWeight(), car.getChampionshipStanding(), car.getYear(), CategoryEntity.fromDomain(car.getCategory()));
+        return new CarEntity(car.getId(), car.getName(), car.getEngine(), car.getTyreSize(), car.getWeight(), car.getChampionshipStanding(), car.getYear(), car.getImgUrl(), CategoryEntity.fromDomain(car.getCategory()));
     }
 }
