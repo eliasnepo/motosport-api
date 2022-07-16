@@ -17,27 +17,31 @@ services:
     image: localstack/localstack:latest
     environment:
       - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
     ports:
       - 4566:4566
+    volumes:
+      - '/tmp/localstack:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
 
-  aws-cli:
-    image: mesosphere/aws-cli
-    environment:
-      - AWS_ACCESS_KEY_ID=key
-      - AWS_SECRET_ACCESS_KEY=secret
-      - AWS_DEFAULT_REGION=sa-east-1
-    entrypoint: /bin/sh -c
-    command: >
-      "
-        sleep 10
-        aws s3api --endpoint-url http://localstack:4566 create-bucket --bucket images-cars
-      
-        sleep 5
-        echo Listing buckets
-        aws s3api --endpoint-url http://localstack:4566 list-buckets
-      "
-    depends_on:
-      - localstack
+#  aws-cli:
+#    image: mesosphere/aws-cli
+#    environment:
+#      - AWS_ACCESS_KEY_ID=key
+#      - AWS_SECRET_ACCESS_KEY=secret
+#      - AWS_DEFAULT_REGION=sa-east-1
+#    entrypoint: /bin/sh -c
+#    command: >
+#      "
+#        sleep 10
+#        aws s3api --endpoint-url http://localstack:4566 create-bucket --bucket images-cars
+#
+#        sleep 5
+#        echo Listing buckets
+#        aws s3api --endpoint-url http://localstack:4566 list-buckets
+#      "
+#    depends_on:
+#      - localstack
 
 volumes:
   postgres-volume:
