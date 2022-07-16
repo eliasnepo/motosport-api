@@ -13,5 +13,27 @@ services:
       POSTGRES_DB: streaming-services
       POSTGRES_HOST: postgres
 
+  localstack:
+    image: localstack/localstack:latest
+      environment:
+        SERVICES: s3
+      ports:
+        - 4566:4566
+
+  aws-cli:
+    image: mesosphere/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - AWS_DEFAULT_REGION=sa-east-1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        sleep 25
+        aws s3 --endpoint-url http://localhost:4566 create-bucket images-cars
+      "
+    depends_on:
+      - localstack
+
 volumes:
   postgres-volume:
