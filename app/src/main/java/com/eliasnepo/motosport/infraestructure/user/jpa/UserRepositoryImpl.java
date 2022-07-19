@@ -3,6 +3,8 @@ package com.eliasnepo.motosport.infraestructure.user.jpa;
 import com.eliasnepo.motosport.domain.user.User;
 import com.eliasnepo.motosport.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,8 +17,8 @@ public class UserRepositoryImpl implements UserRepository {
     UserRepositoryJpa userRepositoryJpa;
 
     @Override
-    public List<User> findAll() {
-        return userRepositoryJpa.findAll().stream().map(UserEntity::toDomain).toList();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepositoryJpa.findAll(pageable).map(UserEntity::toDomain);
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.domain.user.User;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,8 +19,8 @@ public class CarRepositoryImpl implements CarRepository {
     private CarRepositoryJpa carRepositoryJpa;
 
     @Override
-    public List<Car> findAll() {
-        return carRepositoryJpa.findAll().stream().map(CarEntity::toDomain).toList();
+    public Page<Car> findAll(Pageable pageable) {
+        return carRepositoryJpa.findAll(pageable).map(CarEntity::toDomain);
     }
 
     @Override

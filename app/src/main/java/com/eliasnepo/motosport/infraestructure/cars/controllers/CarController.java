@@ -6,8 +6,13 @@ import com.eliasnepo.motosport.application.cars.create.dto.CreateCarRequest;
 import com.eliasnepo.motosport.application.cars.create.dto.CreateCarResponse;
 import com.eliasnepo.motosport.application.cars.find.FindCarUseCase;
 import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
+import com.eliasnepo.motosport.application.cars.list.ListCarsUseCase;
+import com.eliasnepo.motosport.application.cars.list.dto.ListCarResponse;
 import com.eliasnepo.motosport.infraestructure.cars.jpa.CarRepositoryImpl;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryRepositoryImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +32,7 @@ public class CarController {
     private final CreateCarUseCase createCarService;
     private final FindCarUseCase findCarService;
     private final FileStorage fileStorage;
+    private final ListCarsUseCase listCarsUseCase;
 
     public CarController(final CarRepositoryImpl repository, final CategoryRepositoryImpl categoryRepository, FileStorage fileStorage) {
         this.repository = repository;
@@ -34,6 +40,7 @@ public class CarController {
         this.fileStorage = fileStorage;
         this.createCarService = new CreateCarUseCase(repository, categoryRepository, fileStorage);
         this.findCarService = new FindCarUseCase(repository);
+        this.listCarsUseCase = new ListCarsUseCase(repository);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -53,5 +60,15 @@ public class CarController {
     public ResponseEntity<FindCarResponse> findCarById(@PathVariable Long id) {
         FindCarResponse response = findCarService.findCarById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ListCarResponse>> findAllPaged(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "qtd", defaultValue = "6") Integer qtd) {
+
+        Pageable pageRequest = PageRequest.of(page, qtd);
+        Page<ListCarResponse> listCars = listCarsUseCase.listCars(pageRequest);
+        return ResponseEntity.ok(listCars);
     }
 }
