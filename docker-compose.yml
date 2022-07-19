@@ -16,32 +16,36 @@ services:
   localstack:
     image: localstack/localstack:latest
     environment:
-      - SERVICES=s3
+      - SERVICES=sqs,s3
       - DATA_DIR=/tmp/localstack/data
     ports:
-      - 4566:4566
+      - "4566:4566"
     volumes:
       - '/tmp/localstack:/tmp/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
 
-#  aws-cli:
-#    image: mesosphere/aws-cli
-#    environment:
-#      - AWS_ACCESS_KEY_ID=key
-#      - AWS_SECRET_ACCESS_KEY=secret
-#      - AWS_DEFAULT_REGION=sa-east-1
-#    entrypoint: /bin/sh -c
-#    command: >
-#      "
-#        sleep 10
-#        aws s3api --endpoint-url http://localstack:4566 create-bucket --bucket images-cars
-#
-#        sleep 5
-#        echo Listing buckets
-#        aws s3api --endpoint-url http://localstack:4566 list-buckets
-#      "
-#    depends_on:
-#      - localstack
+  aws-cli:
+    image: mesosphere/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - AWS_DEFAULT_REGION=sa-east-1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        sleep 10
+        aws sqs create-queue --endpoint-url=http://localstack:4566 --queue-name producer-review
+
+        sleep 10
+        echo Listing queues
+        aws sqs --endpoint-url http://localstack:4566 list-queues
+      
+        while true; do aws sqs --endpoint-url http://localstack:4566 send-message --queue-url http://localhost:4566/000000000000/producer-review --message-body "This car is so fast"; sleep 120; done
+        sleep 5
+        
+      "
+    depends_on:
+      - localstack
 
 volumes:
   postgres-volume:
