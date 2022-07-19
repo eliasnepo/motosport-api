@@ -36,13 +36,13 @@ services:
         sleep 10
         aws sqs create-queue --endpoint-url=http://localstack:4566 --queue-name producer-review
 
-        sleep 10
+        sleep 5
         echo Listing queues
         aws sqs --endpoint-url http://localstack:4566 list-queues
       
-        while true; do aws sqs --endpoint-url http://localstack:4566 send-message --queue-url http://localhost:4566/000000000000/producer-review --message-body "This car is so fast"; sleep 120; done
+        while true; do aws sqs --endpoint-url http://localstack:4566 send-message --queue-url http://localhost:4566/000000000000/producer-review --message-body "fast"; sleep 120; done
         sleep 5
-        
+      
       "
     depends_on:
       - localstack
