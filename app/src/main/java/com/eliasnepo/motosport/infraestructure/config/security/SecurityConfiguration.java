@@ -2,6 +2,7 @@ package com.eliasnepo.motosport.infraestructure.config.security;
 
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepositoryJpa userRepository;
 
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.secret.refresh.token}")
+    private String jwtSecretRefreshToken;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
@@ -57,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/categories/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtSecret, jwtSecretRefreshToken));
+        http.addFilterBefore(new CustomAuthorizationFilter(jwtSecret), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -29,8 +31,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    private final String jwtSecret;
+
+    private final String jwtSecretRefreshToken;
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, String jwtSecret, String jwtSecretRefreshToken) {
         this.authenticationManager = authenticationManager;
+        this.jwtSecret = jwtSecret;
+        this.jwtSecretRefreshToken = jwtSecretRefreshToken;
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -44,7 +52,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         UserEntity user = (UserEntity)authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
+        Algorithm algorithmRefreshToken = Algorithm.HMAC256(jwtSecretRefreshToken.getBytes());
 
         String access_token = JWT.create()
                 .withSubject(user.getEmail())
@@ -57,7 +66,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+(60*60*1000)))
                 .withIssuer(request.getRequestURL().toString())
-                .sign(algorithm);
+                .sign(algorithmRefreshToken);
 
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token",access_token);

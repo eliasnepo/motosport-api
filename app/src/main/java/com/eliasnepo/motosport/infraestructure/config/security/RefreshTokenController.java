@@ -9,6 +9,7 @@ import com.eliasnepo.motosport.infraestructure.config.security.exceptions.Refres
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserRepositoryJpa;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,9 @@ public class RefreshTokenController {
 
     private final UserRepositoryJpa repository;
 
+    @Value("${jwt.secret.refresh.token}")
+    private String jwtSecret;
+
     public RefreshTokenController(UserRepositoryJpa repository) {
         this.repository = repository;
     }
@@ -41,7 +45,7 @@ public class RefreshTokenController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refreshToken = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
 
