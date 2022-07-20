@@ -2,7 +2,6 @@ package com.eliasnepo.motosport.infraestructure.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eliasnepo.motosport.domain.user.User;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,5 +64,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("refresh_token",refresh_token);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", Instant.now().toString());
+        error.put("status", 400);
+        error.put("error", "Email or password is incorrect");
+        error.put("path", request.getRequestURI());
+
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setStatus(400);
+        new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
 }
