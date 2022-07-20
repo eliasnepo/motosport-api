@@ -2,6 +2,7 @@ package com.eliasnepo.motosport.infraestructure.exceptions.handler;
 
 import com.eliasnepo.motosport.application.exceptions.DatabaseException;
 import com.eliasnepo.motosport.application.exceptions.ResourceNotFoundException;
+import com.eliasnepo.motosport.infraestructure.config.security.exceptions.RefreshTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -35,6 +36,19 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 status.value(),
                 "Database exception",
+                e.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<StandardError> database(RefreshTokenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "Authentication exception",
                 e.getMessage(),
                 request.getRequestURI());
 
