@@ -33,6 +33,7 @@ public class ReviewListenerSQS {
         review.setText(sqsMessage);
 
         log.info("Message received: {}", sqsMessage);
-        //A mensagem do SQS está em textMessage.getText()
+
+        repository.save(review);
     }
 }
