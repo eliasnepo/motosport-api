@@ -5,6 +5,7 @@ import com.eliasnepo.motosport.domain.review.Review;
 import com.eliasnepo.motosport.domain.user.User;
 import com.eliasnepo.motosport.infraestructure.cars.jpa.CarEntity;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryEntity;
+import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,12 @@ public class ReviewEntity {
     private Long id;
     private String text;
     @ManyToOne
-    private User guesser;
+    private UserEntity guesser;
     @ManyToOne
-    private Car car;
+    private CarEntity car;
     private Boolean isRated = false;
 
-    public ReviewEntity(String text, User guesser, Car car, Boolean isRated) {
+    public ReviewEntity(String text, UserEntity guesser, CarEntity car, Boolean isRated) {
         this.text = text;
         this.guesser = guesser;
         this.car = car;
@@ -34,10 +35,10 @@ public class ReviewEntity {
     }
 
     public Review toDomain() {
-        return new Review(getId(), getText(), getGuesser(), getCar(), getIsRated());
+        return new Review(getId(), getText(), getGuesser().toDomain(), getCar().toDomain(), getIsRated());
     }
 
     public static ReviewEntity fromDomain(Review review) {
-        return new ReviewEntity(review.getId(), review.getText(), review.getGuesser(), review.getCar(), review.getIsRated());
+        return new ReviewEntity(review.getId(), review.getText(), UserEntity.fromDomain(review.getGuesser()), CarEntity.fromDomain(review.getCar()), review.getIsRated());
     }
 }
