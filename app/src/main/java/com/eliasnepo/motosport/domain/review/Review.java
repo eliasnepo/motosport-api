@@ -14,6 +14,6 @@ public class Review {
     private String text;
     private User guesser;
     private Car car;
-    private Boolean isRated;
+    private Boolean isRated = false;
 
 }
