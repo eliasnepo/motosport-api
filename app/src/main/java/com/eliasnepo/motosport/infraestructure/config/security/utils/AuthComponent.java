@@ -1,5 +1,6 @@
 package com.eliasnepo.motosport.infraestructure.config.security.utils;
 
+import com.eliasnepo.motosport.application.components.IAuthComponent;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class AuthComponent {
+public class AuthComponent implements IAuthComponent {
 
     @Autowired
     private UserRepositoryJpa userRepository;

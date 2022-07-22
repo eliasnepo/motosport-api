@@ -11,4 +11,6 @@ import java.util.List;
 public interface ReviewRepositoryJpa extends JpaRepository<ReviewEntity, Long> {
     @Query(value = "SELECT r FROM ReviewEntity r WHERE r.guesser IS NULL")
     List<ReviewEntity> findAllWhereUserIsNull();
+
+    List<ReviewEntity> findByGuesserId(Long id);
 }
