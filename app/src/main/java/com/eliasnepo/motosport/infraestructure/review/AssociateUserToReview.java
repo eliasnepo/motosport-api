@@ -12,7 +12,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 public class AssociateUserToReview {
@@ -24,7 +27,7 @@ public class AssociateUserToReview {
     @Autowired
     private UserRepositoryJpa userRepositoryJpa;
 
-    @Scheduled(fixedDelayString = "5000")
+    @Scheduled(fixedDelay = 300000)
     public void associateUserToReview() {
         List<ReviewEntity> reviewList = reviewRepositoryJpa.findAllWhereUserIsNull();
 
@@ -33,10 +36,14 @@ public class AssociateUserToReview {
         }
 
         reviewList.forEach(review -> {
-            UserEntity guesser = userRepositoryJpa.findRandomUser();
-            review.setGuesser(guesser);
+            Optional<UserEntity> guesser = userRepositoryJpa.findById(getRandomNumber());
+            review.setGuesser(guesser.get());
             reviewRepositoryJpa.save(review);
         });
         log.info("Added {} guessers to reviews", reviewList.size());
+    }
+
+    private Long getRandomNumber() {
+        return Long.valueOf(ThreadLocalRandom.current().nextInt(16, 25 + 1)); // generate a random userId between 16 and 25
     }
 }

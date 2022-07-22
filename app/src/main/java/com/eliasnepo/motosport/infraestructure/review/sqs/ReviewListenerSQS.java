@@ -28,12 +28,10 @@ public class ReviewListenerSQS {
 
     @JmsListener(destination = "producer-review")
     public void receiveProductEvent(TextMessage textMessage) throws JMSException, IOException {
-        String sqsMessage = textMessage.getText();
+        log.info("Message received: {}", textMessage.getText());
+
         ReviewEntity review = new ReviewEntity();
-        review.setText(sqsMessage);
-
-        log.info("Message received: {}", sqsMessage);
-
+        review.setText(textMessage.getText());
         repository.save(review);
     }
 }
