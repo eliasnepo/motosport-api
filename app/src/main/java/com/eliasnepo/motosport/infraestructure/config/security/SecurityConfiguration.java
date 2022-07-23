@@ -60,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(POST, "/login/refreshtoken").permitAll();
         http.authorizeRequests().antMatchers(POST, "/login").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/users/register").permitAll();
         http.authorizeRequests().antMatchers(GET, "/cars/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/categories/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
