@@ -24,6 +24,10 @@ public class CategoryEntity {
     @Column(unique = true, nullable = false)
     private String name;
 
+    public CategoryEntity(String name) {
+        this.name = name;
+    }
+
     public Category toDomain() {
         return new Category(getId(), getName());
     }

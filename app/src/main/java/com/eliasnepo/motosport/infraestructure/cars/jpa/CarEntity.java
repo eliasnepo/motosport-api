@@ -4,10 +4,7 @@ import com.eliasnepo.motosport.domain.cars.Car;
 import com.eliasnepo.motosport.domain.user.User;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryEntity;
 import com.eliasnepo.motosport.infraestructure.user.jpa.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,7 +31,7 @@ public class CarEntity {
     private Integer weight;
     @Column(nullable = true)
     private Integer championshipStanding;
-    @Column(nullable = false)
+    @Column(name = "car_year", nullable = false)
     private LocalDate year;
 
     private String imgUrl;
@@ -43,7 +40,7 @@ public class CarEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    public CarEntity(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, String imgUrl, LocalDate year) {
+    public CarEntity(String name, String engine, Integer tyreSize, Integer weight, Integer championshipStanding, String imgUrl, LocalDate year, CategoryEntity category) {
         this.name = name;
         this.engine = engine;
         this.tyreSize = tyreSize;
@@ -51,6 +48,7 @@ public class CarEntity {
         this.championshipStanding = championshipStanding;
         this.imgUrl = imgUrl;
         this.year = year;
+        this.category = category;
     }
 
     public Car toDomain() {

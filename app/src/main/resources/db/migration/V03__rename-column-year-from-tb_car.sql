@@ -1,0 +1,1 @@
+ALTER TABLE tb_car RENAME COLUMN year TO car_year;
