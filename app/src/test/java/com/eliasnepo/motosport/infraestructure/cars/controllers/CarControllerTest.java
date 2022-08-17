@@ -1,6 +1,7 @@
 package com.eliasnepo.motosport.infraestructure.cars.controllers;
 
 
+import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
 import com.eliasnepo.motosport.application.cars.list.dto.ListCarResponse;
 import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.factories.CarFactory;
@@ -32,8 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
@@ -90,5 +90,30 @@ public class CarControllerTest {
                 .andExpect(jsonPath("$.size").value(qtd))
                 .andExpect(jsonPath("$.number").value(page))
                 .andExpect(jsonPath("$.totalElements").value(carsList.size()));;
+    }
+
+    @Test
+    @DisplayName("should get info from a car when id exists")
+    void test2() throws Exception {
+        CategoryEntity categoryEntity = CategoryFactory.create();
+        categoryEntity = categoryRepository.save(categoryEntity);
+        CarEntity carEntity = CarFactory.create(categoryEntity);
+        carEntity = repository.save(carEntity);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/cars/{id}", carEntity.getId())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        String payload = mockMvc.perform(request)
+                .andExpect(
+                        MockMvcResultMatchers.status().isOk()
+                )
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        FindCarResponse response = objectMapper.readValue(payload, FindCarResponse.class);
+
+        assertNotNull(response);
+        assertEquals(carEntity.getName(), response.getName());
+        assertEquals(carEntity.getId(), response.getId());
     }
 }
