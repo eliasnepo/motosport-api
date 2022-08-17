@@ -2,27 +2,21 @@ package com.eliasnepo.motosport.infraestructure.cars.controllers;
 
 
 import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
-import com.eliasnepo.motosport.application.cars.list.dto.ListCarResponse;
 import com.eliasnepo.motosport.application.exceptions.ResourceNotFoundException;
-import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.factories.CarFactory;
 import com.eliasnepo.motosport.factories.CategoryFactory;
 import com.eliasnepo.motosport.infraestructure.cars.jpa.CarEntity;
 import com.eliasnepo.motosport.infraestructure.cars.jpa.CarRepositoryJpa;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryEntity;
 import com.eliasnepo.motosport.infraestructure.category.jpa.CategoryRepositoryJpa;
+import com.eliasnepo.motosport.infraestructure.config.security.TestSecurityConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,7 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
