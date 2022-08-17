@@ -3,6 +3,7 @@ package com.eliasnepo.motosport.infraestructure.cars.controllers;
 
 import com.eliasnepo.motosport.application.cars.find.dto.FindCarResponse;
 import com.eliasnepo.motosport.application.cars.list.dto.ListCarResponse;
+import com.eliasnepo.motosport.application.exceptions.ResourceNotFoundException;
 import com.eliasnepo.motosport.domain.cars.CarRepository;
 import com.eliasnepo.motosport.factories.CarFactory;
 import com.eliasnepo.motosport.factories.CategoryFactory;
@@ -115,5 +116,22 @@ public class CarControllerTest {
         assertNotNull(response);
         assertEquals(carEntity.getName(), response.getName());
         assertEquals(carEntity.getId(), response.getId());
+    }
+
+    @Test
+    @DisplayName("should not return a car when id doesn't exists")
+    void test3() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/cars/{id}", Integer.MAX_VALUE)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        Exception resolvedException = mockMvc.perform(request)
+                .andExpect(
+                        MockMvcResultMatchers.status().isNotFound()
+                )
+                .andReturn().getResolvedException();
+
+        assertNotNull(resolvedException);
+        assertEquals(ResourceNotFoundException.class, resolvedException.getClass());
     }
 }
