@@ -1,29 +1,5 @@
 version: '3'
 services:
-
-  postgres:
-    image: 'postgres:alpine'
-    volumes:
-      - postgres-volume:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: streaming-services
-      POSTGRES_HOST: postgres
-
-  localstack:
-    image: localstack/localstack:latest
-    environment:
-      - SERVICES=sqs,s3
-      - DATA_DIR=/tmp/localstack/data
-    ports:
-      - "4566:4566"
-    volumes:
-      - '/tmp/localstack:/tmp/localstack'
-      - '/var/run/docker.sock:/var/run/docker.sock'
-
   aws-cli:
     image: mesosphere/aws-cli
     environment:
@@ -35,7 +11,7 @@ services:
       "
         sleep 10
         aws sqs create-queue --endpoint-url=http://localstack:4566 --queue-name producer-review
-
+      
         sleep 5
         echo Listing queues
         aws sqs --endpoint-url http://localstack:4566 list-queues
@@ -44,8 +20,3 @@ services:
         sleep 5
       
       "
-    depends_on:
-      - localstack
-
-volumes:
-  postgres-volume:

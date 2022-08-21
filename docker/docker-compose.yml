@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  postgres:
+    image: 'postgres:alpine'
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: streaming-services
+      POSTGRES_HOST: postgres
+
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=sqs,s3
+      - DATA_DIR=/tmp/localstack/data
+    ports:
+      - "4566:4566"
+    volumes:
+      - '/tmp/localstack:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+volumes:
+  postgres-volume:
