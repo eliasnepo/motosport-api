@@ -1,6 +1,6 @@
 version: '3'
 services:
-  aws-cli:
+  aws-cli-sqs-producer:
     image: mesosphere/aws-cli
     environment:
       - AWS_ACCESS_KEY_ID=key
