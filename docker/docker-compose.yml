@@ -1,6 +1,20 @@
 version: '3'
 services:
 
+#  motosport-api:
+#    build:
+#      dockerfile: Dockerfile
+#      context: ..
+#    image: eliasnepo/motosport-api
+#    container_name: motosport-api
+#    environment:
+#      - DB_URL=jdbc:postgresql://postgres:5432/streaming-services
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - localstack
+#      - postgres
+
   postgres:
     image: 'postgres:alpine'
     volumes:
@@ -12,6 +26,8 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: streaming-services
       POSTGRES_HOST: postgres
+    networks:
+      - motosport-network
 
   localstack:
     image: localstack/localstack:latest
@@ -24,5 +40,46 @@ services:
       - '/tmp/localstack:/tmp/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
 
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - prometheus-volume:/etc/prometheus/
+      - ../app/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - motosport-network
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana-volume:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - motosport-network
+    depends_on:
+      - prometheus
+
+  aws-cli-create-queue:
+    image: mesosphere/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - AWS_DEFAULT_REGION=sa-east-1
+    entrypoint: /bin/sh -c
+    command: >
+      "
+        aws sqs create-queue --endpoint-url=http://localstack:4566 --queue-name producer-review
+      "
+    depends_on:
+      - localstack
+
 volumes:
   postgres-volume:
+  prometheus-volume:
+  grafana-volume:
+
+networks:
+  motosport-network:
+    driver: bridge
